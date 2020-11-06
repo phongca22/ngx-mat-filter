@@ -1,0 +1,23 @@
+<mat-chip-list>
+  <mat-chip *ngFor="let item of items" class="custom-chip" (click)="select($event, item)">
+    <mat-icon *ngIf="!hideIcon">{{item.sort ? 'sort' : 'filter_list'}}</mat-icon>
+    <div class="info">
+      <ng-container *ngIf="item.sort">
+        <div class="mat-caption" style="line-height: initial;">{{item.field.name}}</div>
+        <div class="mat-caption" style="margin-top: -2px; line-height: initial;">{{item.description}}</div>
+      </ng-container>
+      <ng-container *ngIf="!item.sort">
+        <div class="mat-caption" style="line-height: initial;">
+          {{(item.field.name) + '::' + item.operator.short}}</div>
+        <div class="mat-caption" style="margin-top: -2px; line-height: initial;">{{item.description}}</div>
+      </ng-container>
+    </div>
+    <button mat-icon-button (click)="remove(item); $event.stopPropagation()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-chip>
+  <div fxLayout="row">
+    <button mat-stroked-button color="primary" (click)="clearAll()" *ngIf="!hideClear" [fxShow]="items.length > 0"
+      class="clear-button">Clear</button>
+  </div>
+</mat-chip-list>

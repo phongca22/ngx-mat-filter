@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/ngx-mat-filter",
+  "lib": {
+    "entryFile": "src/public-api.ts",
+    "umdModuleIds": {
+      "moment": "moment",
+      "@component/base": "component.base",
+      "@service/alert": "service.alert",
+      "@service/validator": "service.validator",
+      "projects/ngx-filter/src/lib/base/base-component": "base-component",
+      "projects/ngx-filter/src/lib/services/validator.service": "validator.service"
+    }
+  }
+}

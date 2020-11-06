@@ -1,0 +1,34 @@
+<div fxLayout="column" fxLayoutGap="16px">
+  <div>
+    <button mat-raised-button color="primary" (click)="setBatch()">Set Batch</button>
+  </div>
+  <ngx-mat-filter [worker]="worker" [fields]="fields"></ngx-mat-filter>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z2" style="width: 100%">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Product Name</th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+    <ng-container matColumnDef="material">
+      <th mat-header-cell *matHeaderCellDef>Material</th>
+      <td mat-cell *matCellDef="let element"> {{element.materialName}} </td>
+    </ng-container>
+    <ng-container matColumnDef="color">
+      <th mat-header-cell *matHeaderCellDef>Color</th>
+      <td mat-cell *matCellDef="let element"> {{element.colorName}} </td>
+    </ng-container>
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>Price </th>
+      <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+    </ng-container>
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Imported Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.date | date: 'MM-dd-yyyy'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="provider">
+      <th mat-header-cell *matHeaderCellDef>Provider</th>
+      <td mat-cell *matCellDef="let element"> {{element.providerName}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

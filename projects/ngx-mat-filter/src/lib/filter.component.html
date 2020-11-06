@@ -1,0 +1,5 @@
+<div fxLayout="row" fxLayoutAlign="start">
+  <ngx-mat-filter-button [worker]="worker" [fields]="fields"></ngx-mat-filter-button>
+  <ngx-mat-filter-button [worker]="worker" [fields]="fields" [sort]="true"></ngx-mat-filter-button>
+  <ngx-mat-filter-chip *ngIf="!hideChip" [worker]="worker" class="chip-wrapper"></ngx-mat-filter-chip>
+</div>

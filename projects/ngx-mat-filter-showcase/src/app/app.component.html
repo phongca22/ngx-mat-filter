@@ -1,0 +1,12 @@
+<div fxLayout="column" fxLayoutGap="16px">
+  <nav mat-tab-nav-bar>
+    <ng-container *ngFor="let link of links">
+      <a mat-tab-link [active]="rla.isActive" routerLinkActive #rla="routerLinkActive" [routerLink]="link.url">
+        {{link.name}}
+      </a>
+    </ng-container>
+  </nav>
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

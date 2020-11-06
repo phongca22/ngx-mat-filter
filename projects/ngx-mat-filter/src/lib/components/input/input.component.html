@@ -1,0 +1,91 @@
+<ng-container *ngIf="isDate">
+  <ng-container *ngTemplateOutlet="date"></ng-container>
+</ng-container>
+<ng-container *ngIf="isText">
+  <ng-container *ngTemplateOutlet="text"></ng-container>
+</ng-container>
+<ng-container *ngIf="isNumber">
+  <ng-container *ngTemplateOutlet="number"></ng-container>
+</ng-container>
+<ng-container *ngIf="isSelect">
+  <ng-container *ngTemplateOutlet="select"></ng-container>
+</ng-container>
+<ng-container *ngIf="isMultiSelect">
+  <ng-container *ngTemplateOutlet="multiSelect"></ng-container>
+</ng-container>
+<ng-container *ngIf="isAutoComplete">
+  <ng-container *ngTemplateOutlet="autocomplete"></ng-container>
+</ng-container>
+<ng-template #date>
+  <div [formGroup]="form" fxLayout="row" fxLayoutGap="16px">
+    <mat-form-field *ngIf="isDateRange()" floatLabel="never">
+      <input matInput [matDatepicker]="picker" placeholder="From" formControlName="first"
+        [max]="form.get('second').value">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field *ngIf="isDateRange()" floatLabel="never">
+      <input matInput [matDatepicker]="picker" placeholder="To" formControlName="second"
+        [min]="form.get('first').value">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field *ngIf="!isDateRange()" floatLabel="never">
+      <input matInput [matDatepicker]="picker" placeholder="Value" formControlName="first">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #number>
+  <div [formGroup]="form" fxLayout="row" fxLayoutGap="16px">
+    <mat-form-field *ngIf="isNumberRange()" floatLabel="never">
+      <input matInput formControlName="first" placeholder="Min" type="number" [max]="form.get('second').value">
+    </mat-form-field>
+    <mat-form-field *ngIf="isNumberRange()" floatLabel="never">
+      <input matInput formControlName="second" placeholder="Max" type="number" [min]="form.get('first').value">
+    </mat-form-field>
+    <mat-form-field *ngIf="!isNumberRange()" floatLabel="never">
+      <input matInput formControlName="first" placeholder="Value" type="number">
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #text>
+  <div [formGroup]="form">
+    <mat-form-field floatLabel="never">
+      <input matInput formControlName="first" placeholder="Value">
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #autocomplete>
+  <div [formGroup]="form">
+    <mat-form-field floatLabel="never">
+      <input type="text" placeholder="Value" matInput formControlName="first" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let opt of filteredValues| async" [value]="opt">
+          {{opt.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #multiSelect>
+  <div [formGroup]="form">
+    <mat-form-field floatLabel="never">
+      <mat-label>Value</mat-label>
+      <mat-select formControlName="first" multiple>
+        <mat-option *ngFor="let opt of field.options" [value]="opt">{{opt.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #select>
+  <div [formGroup]="form">
+    <mat-form-field floatLabel="never">
+      <mat-label>Value</mat-label>
+      <mat-select formControlName="first">
+        <mat-option *ngFor="let opt of field.options" [value]="opt">{{opt.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>

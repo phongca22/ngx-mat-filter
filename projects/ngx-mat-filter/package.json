@@ -1,0 +1,37 @@
+{
+  "name": "ngx-mat-filter",
+  "version": "1.0.0",
+  "author": {
+    "name": "Phong Ca",
+    "email": "phonglover@gmail.com"
+  },
+  "peerDependencies": {
+    "@angular/common": "^9.1.12",
+    "@angular/core": "^9.1.12",
+    "moment": "^2.29.1",
+    "@angular/cdk": "^9.2.4",
+    "@angular/flex-layout": "^9.0.0-beta.31",
+    "@angular/material": "^9.2.4"
+  },
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "material",
+    "angular-material",
+    "filter",
+    "sort",
+    "order",
+    "chip",
+    "advance"
+  ],
+  "description": "Advanced filter sort for Angular Material",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phongca22/ngx-filter.git"
+  },
+  "homepage": "https://github.com/phongca22/ngx-filter/blob/main/README.md",
+  "bugs": {
+    "url": "https://github.com/phongca22/ngx-filter/issues",
+    "email": "phonglover@gmail.com"
+  }
+}

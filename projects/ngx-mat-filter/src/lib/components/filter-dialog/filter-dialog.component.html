@@ -1,0 +1,10 @@
+<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px" [formGroup]="form">
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+  <ngx-mat-filter-form formControlName="filter" [fields]="data.fields" [data]="data.criteria">
+  </ngx-mat-filter-form>
+  <button mat-icon-button (click)="add()" [disabled]="form.invalid">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

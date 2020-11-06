@@ -1,0 +1,16 @@
+<div fxLayout="row" fxLayoutAlign="start center" [formGroup]="form" fxLayoutGap="16px">
+  <mat-form-field floatLabel="never">
+    <mat-select formControlName="field" placeholder="Field">
+      <mat-option *ngFor="let field of filtered" [value]="field">
+        {{field.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field floatLabel="never">
+    <mat-select formControlName="sort" placeholder="Order By">
+      <mat-option *ngFor="let item of sorts" [value]="item">
+        {{item.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

@@ -1,0 +1,18 @@
+<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px" [formGroup]="form">
+  <mat-form-field floatLabel="never">
+    <mat-select formControlName="field" placeholder="Field" (selectionChange)="selectField($event)">
+      <mat-option *ngFor="let field of filtered" [value]="field">
+        {{field.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field floatLabel="never">
+    <mat-select formControlName="operator" placeholder="Operator">
+      <mat-option *ngFor="let operator of operators" [value]="operator">
+        {{operator.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <ngx-filter-input formControlName="value" [field]="form.get('field').value" [operator]="form.get('operator').value">
+  </ngx-filter-input>
+</div>

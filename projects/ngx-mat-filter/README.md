@@ -1,7 +1,6 @@
 # ngx-mat-filter
 
 ## Support field type
-
 - Input text or number
 - Select or checklist
 - Autocomplete
@@ -16,18 +15,16 @@
 ## Installation
 
 ### Peer Dependencies:
-
-| Package Name         | Version        |
-| :------------------- | :------------- |
-| @angular/common      | ^9.1.12        |
-| @angular/core        | ^9.1.12        |
-| moment               | ^2.29.1        |
-| @angular/cdk         | ^9.2.4         |
-| @angular/flex-layout | ^9.0.0-beta.31 |
-| @angular/material    | ^9.2.4         |
+| Package Name      | Version |
+| :--- | :--- |
+| @angular/common      | ^9.1.12       |
+| @angular/core   | ^9.1.12        |
+|moment|^2.29.1|
+|@angular/cdk|^9.2.4|
+|@angular/flex-layout|^9.0.0-beta.31|
+|@angular/material|^9.2.4|
 
 ### Install ngx-mat-filter
-
 ```cmd
 npm install ngx-mat-filter
 ```
