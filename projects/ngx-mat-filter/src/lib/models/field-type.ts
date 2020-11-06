@@ -1,4 +1,4 @@
-export enum FIELD_TYPE {
+export enum TYPE {
   TEXT = 'text',
   NUMBER = 'number',
   DATE = 'date',

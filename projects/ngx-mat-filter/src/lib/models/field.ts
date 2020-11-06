@@ -1,9 +1,9 @@
-import { FIELD_TYPE } from './field-type';
+import { TYPE } from './field-type';
 
 export interface Field {
   key: string;
   name: string;
-  type: FIELD_TYPE;
+  type: TYPE;
   sortKey?: string;
   sort?: boolean;
   filter?: boolean;

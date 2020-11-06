@@ -13,7 +13,7 @@ import {
 import { MatSelectChange } from '@angular/material/select';
 import { FilterCriteria } from '../../models/criteria';
 import { Field } from '../../models/field';
-import { FIELD_TYPE } from '../../models/field-type';
+import { TYPE } from '../../models/field-type';
 import { Operator, Operators } from '../../models/operator';
 import { ValidatorService } from '../../services/validator.service';
 
@@ -124,13 +124,13 @@ export class NgxMatFilterFormComponent implements OnInit, OnChanges, AfterViewIn
       operator: operator
     });
 
-    if (FIELD_TYPE.AUTO_COMPLETE === type) {
+    if (TYPE.AUTO_COMPLETE === type) {
       this.form.patchValue({
         value: {
           first: field.options.find(({ id }) => id === value.first.id)
         }
       });
-    } else if (FIELD_TYPE.DATE === type) {
+    } else if (TYPE.DATE === type) {
       if (Operators.DateRange === operator) {
         this.form.patchValue({
           value: value
@@ -142,13 +142,13 @@ export class NgxMatFilterFormComponent implements OnInit, OnChanges, AfterViewIn
           }
         });
       }
-    } else if (FIELD_TYPE.MULTI_SELECT === type) {
+    } else if (TYPE.MULTI_SELECT === type) {
       this.form.patchValue({
         value: {
           first: field.options.filter(({ id }) => !!value.first.find(({ tId }) => tId === id))
         }
       });
-    } else if (FIELD_TYPE.NUMBER === type) {
+    } else if (TYPE.NUMBER === type) {
       if (Operators.NumberRange === operator) {
         this.form.patchValue({
           value: value
@@ -160,13 +160,13 @@ export class NgxMatFilterFormComponent implements OnInit, OnChanges, AfterViewIn
           }
         });
       }
-    } else if (FIELD_TYPE.SELECT === type) {
+    } else if (TYPE.SELECT === type) {
       this.form.patchValue({
         value: {
           first: field.options.find(({ id }) => id === value.first.id)
         }
       });
-    } else if (FIELD_TYPE.TEXT === type) {
+    } else if (TYPE.TEXT === type) {
       this.form.patchValue({
         value: {
           first: value.first

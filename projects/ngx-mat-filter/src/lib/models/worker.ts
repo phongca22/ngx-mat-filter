@@ -2,7 +2,7 @@ import { Subject } from 'rxjs';
 import { FilterCriteria, FilterDTO, SortCriteria, SortDTO } from './criteria';
 import { DataMatching } from './data-matching';
 import { Field } from './field';
-import { FIELD_TYPE } from './field-type';
+import { TYPE } from './field-type';
 import { Operators } from './operator';
 import { Sorts } from './sort';
 import moment from 'moment';
@@ -125,17 +125,17 @@ export class NgxMatFilterWorker {
 
   private getLabelByFilter(item: FilterCriteria): string {
     const type = item.field.type;
-    if (FIELD_TYPE.MULTI_SELECT === type) {
+    if (TYPE.MULTI_SELECT === type) {
       return item.value.first.map((val: any) => val.name).join(', ');
-    } else if (FIELD_TYPE.DATE === type) {
+    } else if (TYPE.DATE === type) {
       if (Operators.DateRange === item.operator) {
         return `${moment(item.value.first).format('M/D/YYYY')} - ${moment(item.value.second).format('M/D/YYYY')}`;
       } else {
         return moment(item.value.first).format('M/D/YYYY');
       }
-    } else if (FIELD_TYPE.SELECT === type || FIELD_TYPE.AUTO_COMPLETE === type) {
+    } else if (TYPE.SELECT === type || TYPE.AUTO_COMPLETE === type) {
       return item.value.first.name;
-    } else if (FIELD_TYPE.NUMBER === item.field.type && Operators.NumberRange === item.operator) {
+    } else if (TYPE.NUMBER === item.field.type && Operators.NumberRange === item.operator) {
       return `${item.value.first} - ${item.value.second}`;
     } else {
       return item.value.first.toString();
@@ -162,11 +162,11 @@ export class NgxMatFilterWorker {
   }
 
   private convertValue(field: Field, value: { first: any; second?: any }): { first: any; second?: any } {
-    if (FIELD_TYPE.AUTO_COMPLETE === field.type || FIELD_TYPE.SELECT === field.type) {
+    if (TYPE.AUTO_COMPLETE === field.type || TYPE.SELECT === field.type) {
       return {
         first: field.options.find(({ id }) => id === value.first)
       };
-    } else if (FIELD_TYPE.MULTI_SELECT === field.type) {
+    } else if (TYPE.MULTI_SELECT === field.type) {
       return {
         first: field.options.filter(({ id }) => value.first.includes(id))
       };
@@ -200,16 +200,16 @@ export class NgxMatFilterWorker {
           const first = Sorts.ASC === item.sort ? 'a' : 'b';
           const second = Sorts.ASC === item.sort ? 'b' : 'a';
           if (
-            FIELD_TYPE.TEXT === item.field.type ||
-            FIELD_TYPE.MULTI_SELECT === item.field.type ||
-            FIELD_TYPE.SELECT === item.field.type ||
-            FIELD_TYPE.AUTO_COMPLETE === item.field.type ||
+            TYPE.TEXT === item.field.type ||
+            TYPE.MULTI_SELECT === item.field.type ||
+            TYPE.SELECT === item.field.type ||
+            TYPE.AUTO_COMPLETE === item.field.type ||
             item.field.sortKey
           ) {
             return `${first}['${key}'].localeCompare(${second}['${key}'])`;
-          } else if (FIELD_TYPE.DATE === item.field.type) {
+          } else if (TYPE.DATE === item.field.type) {
             return `new Date(${first}['${key}']) - new Date(${second}['${key}'])`;
-          } else if (FIELD_TYPE.NUMBER === item.field.type) {
+          } else if (TYPE.NUMBER === item.field.type) {
             return `${first}['${key}'] - ${second}['${key}']`;
           } else {
             return `${first}['${key}'] > ${second}['${key}']`;

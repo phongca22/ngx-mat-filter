@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Field, FIELD_TYPE, NgxMatFilterWorker } from 'ngx-mat-filter';
+import { Field, TYPE, NgxMatFilterWorker } from 'ngx-mat-filter';
 import { ColorOptions, FakeService, MaterialOptions, Product, ProviderOptions } from '../services/fake.service';
 @Component({
   selector: 'app-basic-demo',
@@ -40,36 +40,40 @@ export class BasicDemoComponent implements OnInit, OnDestroy {
       {
         key: 'name',
         name: 'Product Name',
-        type: FIELD_TYPE.TEXT
+        type: TYPE.TEXT
       },
       {
         key: 'material',
         name: 'Material',
-        type: FIELD_TYPE.SELECT,
-        options: MaterialOptions,
+        type: TYPE.SELECT,
+        // options: MaterialOptions,
+        options: [
+          { id: 1, name: 'Wood' },
+          { id: 2, name: 'Metal' }
+        ],
         sortKey: 'materialName'
       },
       {
         key: 'color',
         name: 'Color',
-        type: FIELD_TYPE.MULTI_SELECT,
+        type: TYPE.MULTI_SELECT,
         options: ColorOptions,
         sortKey: 'colorName'
       },
       {
         key: 'price',
         name: 'Price',
-        type: FIELD_TYPE.NUMBER
+        type: TYPE.NUMBER
       },
       {
         key: 'date',
         name: 'Date',
-        type: FIELD_TYPE.DATE
+        type: TYPE.DATE
       },
       {
         key: 'provider',
         name: 'Provider',
-        type: FIELD_TYPE.AUTO_COMPLETE,
+        type: TYPE.AUTO_COMPLETE,
         sortKey: 'providerName',
         options: ProviderOptions
       }

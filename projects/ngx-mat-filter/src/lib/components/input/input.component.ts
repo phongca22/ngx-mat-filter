@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { BaseComponent } from '../../models/base-component';
 import { Field } from '../../models/field';
-import { FIELD_TYPE } from '../../models/field-type';
+import { TYPE } from '../../models/field-type';
 import { Operator, Operators } from '../../models/operator';
 import { ValidatorService } from '../../services/validator.service';
 
@@ -39,7 +39,7 @@ export class InputComponent extends BaseComponent implements OnInit, OnChanges, 
   @Input() operator: Operator;
   @Input() field: Field;
   form: FormGroup;
-  Type = FIELD_TYPE;
+  Type = TYPE;
   Operators = Operators;
   filteredValues: Observable<any>;
   isDate: boolean;
@@ -129,12 +129,12 @@ export class InputComponent extends BaseComponent implements OnInit, OnChanges, 
   }
 
   private getFieldType() {
-    this.isDate = this.field?.type === FIELD_TYPE.DATE;
-    this.isText = this.field?.type === FIELD_TYPE.TEXT;
-    this.isNumber = this.field?.type === FIELD_TYPE.NUMBER;
-    this.isSelect = this.field?.type === FIELD_TYPE.SELECT;
-    this.isMultiSelect = this.field?.type === FIELD_TYPE.MULTI_SELECT;
-    this.isAutoComplete = this.field?.type === FIELD_TYPE.AUTO_COMPLETE;
+    this.isDate = this.field?.type === TYPE.DATE;
+    this.isText = this.field?.type === TYPE.TEXT;
+    this.isNumber = this.field?.type === TYPE.NUMBER;
+    this.isSelect = this.field?.type === TYPE.SELECT;
+    this.isMultiSelect = this.field?.type === TYPE.MULTI_SELECT;
+    this.isAutoComplete = this.field?.type === TYPE.AUTO_COMPLETE;
   }
 
   setupForm() {

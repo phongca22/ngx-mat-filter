@@ -1,10 +1,18 @@
 # ngx-mat-filter
 
+## What is it?
+A material component providing a dynamic input for filtering and ordering. It will help you to create a criteria collection easily and is expressed through chip components.
+
+![Basic](https://github.com/phongca22/ngx-mat-filter/blob/main/docs/images/basic.png)
+
 ## Support field type
-- Input text or number
-- Select or checklist
+
+- Text
+- Number
+- Select
+- Checklist
 - Autocomplete
-- Date picker
+- Date
 
 ## Try it
 
@@ -14,17 +22,19 @@
 
 ## Installation
 
-### Peer Dependencies:
-| Package Name      | Version |
-| :--- | :--- |
-| @angular/common      | ^9.1.12       |
-| @angular/core   | ^9.1.12        |
-|moment|^2.29.1|
-|@angular/cdk|^9.2.4|
-|@angular/flex-layout|^9.0.0-beta.31|
-|@angular/material|^9.2.4|
+#### Peer Dependencies:
 
-### Install ngx-mat-filter
+| Package Name         | Version        |
+| :------------------- | :------------- |
+| @angular/common      | ^9.1.12        |
+| @angular/core        | ^9.1.12        |
+| moment               | ^2.29.1        |
+| @angular/cdk         | ^9.2.4         |
+| @angular/flex-layout | ^9.0.0-beta.31 |
+| @angular/material    | ^9.2.4         |
+
+#### Install ngx-mat-filter
+
 ```cmd
 npm install ngx-mat-filter
 ```
@@ -74,6 +84,36 @@ this.fields = [
   }
 ];
 ```
+
+For `Select`, `Checklist` and `Autocomplete` you need to define `options`:
+``` ts
+{
+  key: 'material',
+  name: 'Material',
+  type: FIELD_TYPE.SELECT,
+  options: [
+    { id: 1, name: 'Wood' },
+    { id: 2, name: 'Metal' }
+  ]
+}
+```
+
+As you see, we have an array `options` with `id` and `name`. If you make an order with this field, it will not work well.
+So you have to add `sortKey` to specify which property will be ordered.
+
+``` ts
+{
+  key: 'material',
+  name: 'Material',
+  type: FIELD_TYPE.SELECT,
+  options: [
+    { id: 1, name: 'Wood' },
+    { id: 2, name: 'Metal' }
+  ],
+  sortKey: 'materialName'
+}
+```
+
 
 #### Initialize data:
 

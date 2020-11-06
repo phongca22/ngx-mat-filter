@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { FilterCriteria } from './criteria';
-import { FIELD_TYPE } from './field-type';
+import { TYPE } from './field-type';
 import { Operators } from './operator';
 
 export class DataMatching {
@@ -17,15 +17,15 @@ export class DataMatching {
   run() {
     return this.filters.every((item: FilterCriteria) => {
       const type = item.field.type;
-      if (FIELD_TYPE.TEXT === type) {
+      if (TYPE.TEXT === type) {
         return this.matchByText(item);
-      } else if (FIELD_TYPE.NUMBER === type) {
+      } else if (TYPE.NUMBER === type) {
         return this.matchByNumber(item);
-      } else if (FIELD_TYPE.DATE === type) {
+      } else if (TYPE.DATE === type) {
         return this.matchByDate(item);
-      } else if (FIELD_TYPE.MULTI_SELECT === type) {
+      } else if (TYPE.MULTI_SELECT === type) {
         return this.matchByMultiSelect(item);
-      } else if (FIELD_TYPE.SELECT === type || FIELD_TYPE.AUTO_COMPLETE === type) {
+      } else if (TYPE.SELECT === type || TYPE.AUTO_COMPLETE === type) {
         return this.matchBySelect(item);
       } else {
         return false;
