@@ -1,6 +1,11 @@
 # ngx-mat-filter
 
+
+![GitHub](https://img.shields.io/github/license/phongca22/ngx-mat-filter?style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/phongca22/ngx-mat-filter?style=flat-square)
+
 ## What is it?
+
 A material component providing a dynamic input for filtering and ordering. It will help you to create a criteria collection easily and is expressed through chip components.
 
 ![Basic](https://github.com/phongca22/ngx-mat-filter/blob/main/docs/images/basic.png)
@@ -16,9 +21,9 @@ A material component providing a dynamic input for filtering and ordering. It wi
 
 ## Try it
 
-- [Filter & Sort widget](https://stackblitz.com/edit/ngx-mat-filter-widget)
-- [Use reactive form](https://stackblitz.com/edit/ngx-mat-filter-form)
-- [Manual batch setting](https://stackblitz.com/edit/ngx-filter-basic-demo)
+- [Filter & Sort button](https://stackblitz.com/edit/ngx-mat-filter-basic)
+- [Use reactive form](https://stackblitz.com/edit/ngx-mat-filter-inline)
+- [Manual batch setting](https://stackblitz.com/edit/ngx-mat-filter-batch)
 
 ## Installation
 
@@ -33,7 +38,7 @@ A material component providing a dynamic input for filtering and ordering. It wi
 | @angular/flex-layout | ^9.0.0-beta.31 |
 | @angular/material    | ^9.2.4         |
 
-#### Install ngx-mat-filter
+#### Install
 
 ```cmd
 npm install ngx-mat-filter
@@ -41,7 +46,7 @@ npm install ngx-mat-filter
 
 #### Choose the version corresponding to your Angular version:
 
-| Angular | Angular Material | ngx-filter |
+| Angular | Angular Material | ngx-mat-filter |
 | ------- | ---------------- | ---------- |
 | 9       | 9                | 1.x+       |
 
@@ -80,17 +85,18 @@ this.fields = [
   {
     key: 'name',
     name: 'Product Name',
-    type: FIELD_TYPE.TEXT
+    type: TYPE.TEXT
   }
 ];
 ```
 
 For `Select`, `Checklist` and `Autocomplete` you need to define `options`:
-``` ts
+
+```ts
 {
   key: 'material',
   name: 'Material',
-  type: FIELD_TYPE.SELECT,
+  type: TYPE.SELECT,
   options: [
     { id: 1, name: 'Wood' },
     { id: 2, name: 'Metal' }
@@ -101,11 +107,11 @@ For `Select`, `Checklist` and `Autocomplete` you need to define `options`:
 As you see, we have an array `options` with `id` and `name`. If you make an order with this field, it will not work well.
 So you have to add `sortKey` to specify which property will be ordered.
 
-``` ts
+```ts
 {
   key: 'material',
   name: 'Material',
-  type: FIELD_TYPE.SELECT,
+  type: TYPE.SELECT,
   options: [
     { id: 1, name: 'Wood' },
     { id: 2, name: 'Metal' }
@@ -113,7 +119,6 @@ So you have to add `sortKey` to specify which property will be ordered.
   sortKey: 'materialName'
 }
 ```
-
 
 #### Initialize data:
 
@@ -137,6 +142,38 @@ ngOnDestroy() {
   this.worker.destroy();
 }
 ```
+
+
+## NgxMatFilterWorker
+### Methods
+#### `setData(data: any[])`
+Set original data set
+
+#### `update()`
+Make filter & order on data set
+
+#### `addFilter(data: FilterCriteria)`
+Add a FilterCriteria
+
+#### `removeFilter(data: FilterCriteria)`
+Remove a FilterCriteria
+
+#### `addSort(data: SortCriteria)`
+Add a SortCriteria
+
+#### `removeSort(data: SortCriteria)`
+Remove a SortCriteria
+
+#### `setBatch(filters: FilterDTO[], sorts: SortDTO[])`
+Use createFilter and createSort to generate FilterDTO and SortDTO
+Set a criteria collection
+
+#### `clear()`
+Remove all filter & sort criteria
+
+#### `setFields(data: Field[])`
+When use `setBatch`, you need to provide `fields` for the `worker`
+
 
 ## License
 
