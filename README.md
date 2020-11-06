@@ -34,7 +34,7 @@ A material component providing a dynamic input for filtering and ordering. It wi
 | @angular/flex-layout | ^9.0.0-beta.31 |
 | @angular/material    | ^9.2.4         |
 
-#### Install ngx-mat-filter
+#### Install
 
 ```cmd
 npm install ngx-mat-filter
@@ -42,7 +42,7 @@ npm install ngx-mat-filter
 
 #### Choose the version corresponding to your Angular version:
 
-| Angular | Angular Material | ngx-filter |
+| Angular | Angular Material | ngx-mat-filter |
 | ------- | ---------------- | ---------- |
 | 9       | 9                | 1.x+       |
 
