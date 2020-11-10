@@ -1,4 +1,4 @@
-import { TYPE } from './field-type';
+import { TYPE } from './type';
 export class Operator {
   id: string;
   name: string;

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FilterCriteria } from '../../models/criteria';
+import { FilterCriteria, SortCriteria } from '../../models/criteria';
 import { NgxMatFilterWorker } from '../../models/worker';
 
 @Component({
@@ -8,7 +8,7 @@ import { NgxMatFilterWorker } from '../../models/worker';
   styleUrls: ['./chip.component.css']
 })
 export class NgxMatFilterChipComponent implements OnInit {
-  @Input() worker: NgxMatFilterWorker;
+  @Input() worker: NgxMatFilterWorker<any>;
   @Input() hideIcon: boolean;
   @Input() hideClear: boolean;
   items: any[] = [];
@@ -16,9 +16,11 @@ export class NgxMatFilterChipComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.worker.criteriaChange.subscribe((data: any[]) => {
-      this.items = data;
-    });
+    this.worker
+      .getCriteriaChange()
+      .subscribe(({ filters, sorts }: { filters: FilterCriteria[]; sorts: SortCriteria[] }) => {
+        this.items = [...filters, ...sorts];
+      });
   }
 
   remove(data: any) {
@@ -29,11 +31,11 @@ export class NgxMatFilterChipComponent implements OnInit {
     this.worker.clear();
   }
 
-  select(event: any, data: any) {
+  select(_event: any, data: any) {
     if (data instanceof FilterCriteria) {
-      this.worker.editFilterEvent.next(data);
+      this.worker.editFilter(data);
     } else {
-      this.worker.editSortEvent.next(data);
+      this.worker.editSort(data);
     }
   }
 }

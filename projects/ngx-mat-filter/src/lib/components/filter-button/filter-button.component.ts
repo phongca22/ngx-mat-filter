@@ -14,7 +14,7 @@ const PANEL_CLASS = 'ngx-mat-filter-dialog';
   styleUrls: ['./filter-button.component.css']
 })
 export class FilterButtonComponent implements OnInit {
-  @Input() worker: NgxMatFilterWorker;
+  @Input() worker: NgxMatFilterWorker<any>;
   @Input() fields: Field[];
   @Input() sort: boolean;
   @ViewChild('button', { read: ElementRef }) button: ElementRef;
@@ -23,11 +23,11 @@ export class FilterButtonComponent implements OnInit {
 
   ngOnInit() {
     if (this.sort) {
-      this.worker.editSortEvent.subscribe((data: SortCriteria) => {
+      this.worker.getSortEvent().subscribe((data: SortCriteria) => {
         this.showSortDialog(data);
       });
     } else {
-      this.worker.editFilterEvent.subscribe((data: FilterCriteria) => {
+      this.worker.getFilterEvent().subscribe((data: FilterCriteria) => {
         this.showFilterDialog(data);
       });
     }

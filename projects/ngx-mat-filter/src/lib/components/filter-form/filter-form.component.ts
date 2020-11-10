@@ -13,7 +13,6 @@ import {
 import { MatSelectChange } from '@angular/material/select';
 import { FilterCriteria } from '../../models/criteria';
 import { Field } from '../../models/field';
-import { TYPE } from '../../models/field-type';
 import { Operator, Operators } from '../../models/operator';
 import { ValidatorService } from '../../services/validator.service';
 
@@ -85,9 +84,8 @@ export class NgxMatFilterFormComponent implements OnInit, OnChanges, AfterViewIn
   ngOnChanges() {
     if (this.fields) {
       this.filtered = this.fields.filter((field: Field) => {
-        const key = 'filter';
-        if (field.hasOwnProperty(key)) {
-          return field[key];
+        if (typeof field.skipFilter === 'boolean') {
+          return field.skipFilter;
         } else {
           return true;
         }
@@ -117,62 +115,18 @@ export class NgxMatFilterFormComponent implements OnInit, OnChanges, AfterViewIn
     const field = this.fields.find(({ key }) => key === this.data.field.key);
     this.operators = this.getOperators(field);
     const operator = this.operators.find(({ id }) => id === this.data.operator.id);
-    const type = this.data.field.type;
     const value = this.data.value;
     this.form.patchValue({
       field: field,
       operator: operator
     });
 
-    if (TYPE.AUTO_COMPLETE === type) {
-      this.form.patchValue({
-        value: {
-          first: field.options.find(({ id }) => id === value.first.id)
-        }
-      });
-    } else if (TYPE.DATE === type) {
-      if (Operators.DateRange === operator) {
-        this.form.patchValue({
-          value: value
-        });
-      } else {
-        this.form.patchValue({
-          value: {
-            first: value.first
-          }
-        });
-      }
-    } else if (TYPE.MULTI_SELECT === type) {
-      this.form.patchValue({
-        value: {
-          first: field.options.filter(({ id }) => !!value.first.find(({ tId }) => tId === id))
-        }
-      });
-    } else if (TYPE.NUMBER === type) {
-      if (Operators.NumberRange === operator) {
-        this.form.patchValue({
-          value: value
-        });
-      } else {
-        this.form.patchValue({
-          value: {
-            first: value.first
-          }
-        });
-      }
-    } else if (TYPE.SELECT === type) {
-      this.form.patchValue({
-        value: {
-          first: field.options.find(({ id }) => id === value.first.id)
-        }
-      });
-    } else if (TYPE.TEXT === type) {
-      this.form.patchValue({
-        value: {
-          first: value.first
-        }
-      });
-    }
+    this.form.patchValue({
+      value: field.getValue({
+        operator: operator,
+        value: value
+      })
+    });
   }
 
   selectField(event: MatSelectChange) {

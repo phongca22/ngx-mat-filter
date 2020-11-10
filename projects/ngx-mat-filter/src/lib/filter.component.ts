@@ -8,7 +8,7 @@ import { NgxMatFilterWorker } from './models/worker';
   styleUrls: ['./filter.component.css']
 })
 export class NgxMatFilterComponent implements OnInit {
-  @Input() worker: NgxMatFilterWorker;
+  @Input() worker: NgxMatFilterWorker<any>;
   @Input() fields: Field[];
   @Input() hideChip: boolean;
 

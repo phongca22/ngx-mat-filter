@@ -1,30 +1,25 @@
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { FilterCriteria, FilterDTO, SortCriteria, SortDTO } from './criteria';
-import { DataMatching } from './data-matching';
 import { Field } from './field';
-import { TYPE } from './field-type';
-import { Operators } from './operator';
 import { Sorts } from './sort';
-import moment from 'moment';
+import { TYPE } from './type';
 
-export class NgxMatFilterWorker {
-  filters: FilterCriteria[];
-  sorts: SortCriteria[];
-  criteriaChange: Subject<any[]>;
-  data: any[];
-  filtered: any[];
-  dataChange: Subject<any[]>;
-  batchChange: Subject<any>;
-  editFilterEvent: Subject<FilterCriteria>;
-  editSortEvent: Subject<SortCriteria>;
-  fields: Field[];
+export class NgxMatFilterWorker<T> {
+  private filters: FilterCriteria[];
+  private sorts: SortCriteria[];
+  private criteriaChange: Subject<{ filters: FilterCriteria[]; sorts: SortCriteria[] }>;
+  private data: T[];
+  private filtered: T[];
+  private dataChange: Subject<T[]>;
+  private editFilterEvent: Subject<FilterCriteria>;
+  private editSortEvent: Subject<SortCriteria>;
+  private fields: Field[];
 
   constructor() {
     this.filters = [];
     this.sorts = [];
     this.criteriaChange = new Subject();
     this.dataChange = new Subject();
-    this.batchChange = new Subject();
     this.editFilterEvent = new Subject();
     this.editSortEvent = new Subject();
   }
@@ -34,14 +29,14 @@ export class NgxMatFilterWorker {
   }
 
   addFilter(item: FilterCriteria, skipUpdate?: boolean) {
-    const current = this.filters.find((val) => val.field.key === item.field.key);
+    let current = this.filters.find((val) => val.field.key === item.field.key);
     if (current) {
-      current.operator = item.operator;
-      current.value = item.value;
-      current.description = this.getLabelByFilter(current);
+      const temp = new FilterCriteria(item.field, item.operator, item.value);
+      current.operator = temp.operator;
+      current.value = temp.value;
+      current.description = temp.description;
     } else {
       const result = new FilterCriteria(item.field, item.operator, item.value);
-      result.description = this.getLabelByFilter(result);
       this.filters.push(result);
     }
 
@@ -59,13 +54,13 @@ export class NgxMatFilterWorker {
   }
 
   addSort(item: SortCriteria, skipUpdate?: boolean) {
-    const current = this.sorts.find((val) => val.field.key === item.field.key);
+    let current = this.sorts.find((val) => val.field.key === item.field.key);
     if (current) {
-      current.sort = item.sort;
-      current.description = this.getLabelBySort(item);
+      const temp = new SortCriteria(item.field, item.sort);
+      current.sort = temp.sort;
+      current.description = temp.description;
     } else {
       const result = new SortCriteria(item.field, item.sort);
-      result.description = this.getLabelBySort(result);
       this.sorts.push(result);
     }
 
@@ -83,7 +78,7 @@ export class NgxMatFilterWorker {
   }
 
   update() {
-    this.criteriaChange.next([...this.filters, ...this.sorts]);
+    this.criteriaChange.next({ filters: this.filters, sorts: this.sorts });
     if (Array.isArray(this.data)) {
       this.run();
       this.dataChange.next(this.filtered);
@@ -109,59 +104,31 @@ export class NgxMatFilterWorker {
   setBatch(filters: FilterDTO[], sorts: SortDTO[]) {
     this.filters = [];
     this.sorts = [];
-    const convertedFilter = this.convertFilter(filters);
-    const convertedSort = this.convertSort(sorts);
-    convertedFilter.forEach((item: FilterCriteria) => {
+    const tempFilter = this.parseFilter(filters);
+    const tempSort = this.parseSort(sorts);
+    tempFilter.forEach((item: FilterCriteria) => {
       this.addFilter(item, true);
     });
 
-    convertedSort.forEach((item: SortCriteria) => {
+    tempSort.forEach((item: SortCriteria) => {
       this.addSort(item, true);
     });
 
-    this.batchChange.next({ filters: convertedFilter, sorts: convertedSort });
     this.update();
   }
 
-  private getLabelByFilter(item: FilterCriteria): string {
-    const type = item.field.type;
-    if (TYPE.MULTI_SELECT === type) {
-      return item.value.first.map((val: any) => val.name).join(', ');
-    } else if (TYPE.DATE === type) {
-      if (Operators.DateRange === item.operator) {
-        return `${moment(item.value.first).format('M/D/YYYY')} - ${moment(item.value.second).format('M/D/YYYY')}`;
-      } else {
-        return moment(item.value.first).format('M/D/YYYY');
-      }
-    } else if (TYPE.SELECT === type || TYPE.AUTO_COMPLETE === type) {
-      return item.value.first.name;
-    } else if (TYPE.NUMBER === item.field.type && Operators.NumberRange === item.operator) {
-      return `${item.value.first} - ${item.value.second}`;
-    } else {
-      return item.value.first.toString();
-    }
-  }
-
-  private getLabelBySort(item: SortCriteria): string {
-    return item.sort.name;
-  }
-
-  private convertFilter(data: FilterDTO[]): FilterCriteria[] {
+  private parseFilter(data: FilterDTO[]): FilterCriteria[] {
     if (data) {
       return data.map((t: FilterDTO) => {
         const field = this.fields.find(({ key }) => key === t.key);
-        return {
-          field: field,
-          operator: t.operator,
-          value: this.convertValue(field, t.value)
-        };
+        return new FilterCriteria(field, t.operator, this.parseValue(field, t.value));
       });
     } else {
       return [];
     }
   }
 
-  private convertValue(field: Field, value: { first: any; second?: any }): { first: any; second?: any } {
+  private parseValue(field: Field, value: { first: any; second?: any }): { first: any; second?: any } {
     if (TYPE.AUTO_COMPLETE === field.type || TYPE.SELECT === field.type) {
       return {
         first: field.options.find(({ id }) => id === value.first)
@@ -175,48 +142,32 @@ export class NgxMatFilterWorker {
     }
   }
 
-  private convertSort(data: SortDTO[]): SortCriteria[] {
+  private parseSort(data: SortDTO[]): SortCriteria[] {
     if (data) {
-      return data.map((t: SortDTO) => ({
-        field: this.fields.find(({ key }) => key === t.key),
-        sort: t.value
-      }));
+      return data.map(
+        (t: SortDTO) =>
+          new SortCriteria(
+            this.fields.find(({ key }) => key === t.key),
+            t.value
+          )
+      );
     } else {
       return [];
     }
   }
 
-  setData(data: any[]) {
+  setData(data: T[]) {
     this.data = data;
   }
 
   private run() {
-    let temp = this.data.filter((item: any) => this.isMatch(item));
+    let temp = this.data.filter((item: T) => this.isMatch(item));
     if (Array.isArray(this.sorts)) {
       const sortCondition = this.sorts
-        .filter((item: SortCriteria) => item.field.skipSort == null)
-        .map((item: SortCriteria) => {
-          const key = item.field.sortKey || item.field.key;
-          const first = Sorts.ASC === item.sort ? 'a' : 'b';
-          const second = Sorts.ASC === item.sort ? 'b' : 'a';
-          if (
-            TYPE.TEXT === item.field.type ||
-            TYPE.MULTI_SELECT === item.field.type ||
-            TYPE.SELECT === item.field.type ||
-            TYPE.AUTO_COMPLETE === item.field.type ||
-            item.field.sortKey
-          ) {
-            return `${first}['${key}'].localeCompare(${second}['${key}'])`;
-          } else if (TYPE.DATE === item.field.type) {
-            return `new Date(${first}['${key}']) - new Date(${second}['${key}'])`;
-          } else if (TYPE.NUMBER === item.field.type) {
-            return `${first}['${key}'] - ${second}['${key}']`;
-          } else {
-            return `${first}['${key}'] > ${second}['${key}']`;
-          }
-        });
+        .filter((item: SortCriteria) => !item.field.skipSort)
+        .map((item: SortCriteria) => item.field.getSort(item.sort));
 
-      temp.sort((a: any, b: any) => {
+      temp.sort((a: T, b: T) => {
         return eval(`(a, b) => {return ${sortCondition.join('||')}}`)(a, b);
       });
     }
@@ -224,14 +175,44 @@ export class NgxMatFilterWorker {
     this.filtered = temp;
   }
 
-  private isMatch(item: any) {
-    return new DataMatching(item, this.filters).isMatch;
+  private isMatch(data: T) {
+    return this.filters.every((filter: FilterCriteria) =>
+      filter.field.isMatch({
+        actual: data[filter.field.key],
+        operator: filter.operator,
+        expected: filter.value
+      })
+    );
   }
 
   destroy() {
     this.criteriaChange.complete();
     this.dataChange.complete();
-    this.batchChange.complete();
     this.editFilterEvent.complete();
+    this.editSortEvent.complete();
+  }
+
+  getDataChange(): Observable<T[]> {
+    return this.dataChange.asObservable();
+  }
+
+  getCriteriaChange(): Observable<{ filters: FilterCriteria[]; sorts: SortCriteria[] }> {
+    return this.criteriaChange.asObservable();
+  }
+
+  getSortEvent(): Observable<SortCriteria> {
+    return this.editSortEvent.asObservable();
+  }
+
+  getFilterEvent(): Observable<FilterCriteria> {
+    return this.editFilterEvent.asObservable();
+  }
+
+  editSort(data: SortCriteria): void {
+    this.editSortEvent.next(data);
+  }
+
+  editFilter(data: FilterCriteria): void {
+    this.editFilterEvent.next(data);
   }
 }

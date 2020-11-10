@@ -8,13 +8,22 @@ import {
   NG_VALUE_ACCESSOR,
   ValidationErrors,
   Validator,
+  ValidatorFn,
   Validators
 } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { BaseComponent } from '../../models/base-component';
-import { Field } from '../../models/field';
-import { TYPE } from '../../models/field-type';
+import {
+  AutocompleteField,
+  DateField,
+  Field,
+  MultiSelectField,
+  NumberField,
+  SelectField,
+  TextField
+} from '../../models/field';
+import { TYPE } from '../../models/type';
 import { Operator, Operators } from '../../models/operator';
 import { ValidatorService } from '../../services/validator.service';
 
@@ -118,6 +127,9 @@ export class InputComponent extends BaseComponent implements OnInit, OnChanges, 
       this.form.get('second').enable();
       this.form.get('second').setValidators(Validators.required);
       this.form.get('first').setValidators(Validators.required);
+    } else if (this.isAutoComplete) {
+      this.form.get('first').setValidators([Validators.required, forbiddenValidator()]);
+      this.form.get('second').disable();
     } else {
       this.form.get('second').disable();
       this.form.get('second').setValidators(Validators.required);
@@ -129,12 +141,12 @@ export class InputComponent extends BaseComponent implements OnInit, OnChanges, 
   }
 
   private getFieldType() {
-    this.isDate = this.field?.type === TYPE.DATE;
-    this.isText = this.field?.type === TYPE.TEXT;
-    this.isNumber = this.field?.type === TYPE.NUMBER;
-    this.isSelect = this.field?.type === TYPE.SELECT;
-    this.isMultiSelect = this.field?.type === TYPE.MULTI_SELECT;
-    this.isAutoComplete = this.field?.type === TYPE.AUTO_COMPLETE;
+    this.isDate = this.field instanceof DateField;
+    this.isText = this.field instanceof TextField;
+    this.isNumber = this.field instanceof NumberField;
+    this.isSelect = this.field?.constructor.name === SelectField.name;
+    this.isMultiSelect = this.field instanceof MultiSelectField;
+    this.isAutoComplete = this.field?.constructor.name === AutocompleteField.name;
   }
 
   setupForm() {
@@ -160,4 +172,10 @@ export class InputComponent extends BaseComponent implements OnInit, OnChanges, 
   isNumberRange(): boolean {
     return Operators.NumberRange === this.operator;
   }
+}
+
+export function forbiddenValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    return typeof control.value === 'string' ? { forbidden: { value: control.value } } : null;
+  };
 }

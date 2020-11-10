@@ -9,7 +9,7 @@ function random(min: number, max: number) {
 
 function generate(size: number, fn: Function): any[] {
   return [...new Set([...Array(size).keys()].map(() => fn()))].map((val: string, index: number) => ({
-    id: index.toString(),
+    id: index,
     name: val
   }));
 }

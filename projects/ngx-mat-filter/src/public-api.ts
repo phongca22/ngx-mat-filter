@@ -3,7 +3,7 @@
  */
 
 export * from './lib/models/field';
-export * from './lib/models/field-type';
+export * from './lib/models/type';
 export * from './lib/models/operator';
 export * from './lib/models/sort';
 export * from './lib/models/worker';

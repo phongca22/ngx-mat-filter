@@ -1,6 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Field, TYPE, NgxMatFilterWorker } from 'ngx-mat-filter';
+import {
+  createAutocompleteField,
+  createDateField,
+  createMultiSelectField,
+  createNumberField,
+  createSelectField,
+  createTextField,
+  Field,
+  NgxMatFilterWorker
+} from 'ngx-mat-filter';
 import { ColorOptions, FakeService, MaterialOptions, Product, ProviderOptions } from '../services/fake.service';
 @Component({
   selector: 'app-basic-demo',
@@ -8,7 +17,7 @@ import { ColorOptions, FakeService, MaterialOptions, Product, ProviderOptions } 
   styleUrls: ['./basic-demo.component.scss']
 })
 export class BasicDemoComponent implements OnInit, OnDestroy {
-  worker: NgxMatFilterWorker;
+  worker: NgxMatFilterWorker<Product>;
   fields: Field[];
   displayedColumns: string[] = ['name', 'material', 'color', 'price', 'date', 'provider'];
   dataSource: MatTableDataSource<Product>;
@@ -28,7 +37,7 @@ export class BasicDemoComponent implements OnInit, OnDestroy {
 
   setupWorker() {
     this.worker = new NgxMatFilterWorker();
-    this.worker.dataChange.subscribe((data: any[]) => {
+    this.worker.getDataChange().subscribe((data: Product[]) => {
       this.dataSource = new MatTableDataSource(data);
     });
     this.worker.setData(this.items);
@@ -37,46 +46,36 @@ export class BasicDemoComponent implements OnInit, OnDestroy {
 
   setupFields() {
     this.fields = [
-      {
+      createTextField({
         key: 'name',
-        name: 'Product Name',
-        type: TYPE.TEXT
-      },
-      {
+        name: 'Product Name'
+      }),
+      createSelectField({
         key: 'material',
         name: 'Material',
-        type: TYPE.SELECT,
-        // options: MaterialOptions,
-        options: [
-          { id: 1, name: 'Wood' },
-          { id: 2, name: 'Metal' }
-        ],
+        options: MaterialOptions,
         sortKey: 'materialName'
-      },
-      {
+      }),
+      createMultiSelectField({
         key: 'color',
         name: 'Color',
-        type: TYPE.MULTI_SELECT,
         options: ColorOptions,
         sortKey: 'colorName'
-      },
-      {
+      }),
+      createNumberField({
         key: 'price',
-        name: 'Price',
-        type: TYPE.NUMBER
-      },
-      {
+        name: 'Price'
+      }),
+      createDateField({
         key: 'date',
-        name: 'Date',
-        type: TYPE.DATE
-      },
-      {
+        name: 'Date'
+      }),
+      createAutocompleteField({
         key: 'provider',
         name: 'Provider',
-        type: TYPE.AUTO_COMPLETE,
         sortKey: 'providerName',
         options: ProviderOptions
-      }
+      })
     ];
   }
 }

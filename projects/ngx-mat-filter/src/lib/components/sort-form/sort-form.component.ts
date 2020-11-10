@@ -33,7 +33,7 @@ import { NgxMatFilterWorker } from '../../models/worker';
   ]
 })
 export class NgxFilterSortFormComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor, Validator {
-  @Input() worker: NgxMatFilterWorker;
+  @Input() worker: NgxMatFilterWorker<any>;
   @Input() fields: Field[];
   @Input() data: SortCriteria;
   form: FormGroup;
@@ -94,9 +94,8 @@ export class NgxFilterSortFormComponent implements OnInit, OnChanges, AfterViewI
   ngOnChanges() {
     if (this.fields) {
       this.filtered = this.fields.filter((field: Field) => {
-        const key = 'sort';
-        if (field.hasOwnProperty(key)) {
-          return field[key];
+        if (typeof field.skipSort === 'boolean') {
+          return field.skipSort;
         } else {
           return true;
         }

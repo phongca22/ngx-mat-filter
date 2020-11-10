@@ -1,6 +1,6 @@
 {
   "name": "ngx-mat-filter",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "author": {
     "name": "Phong Ca",
     "email": "phonglover@gmail.com"
@@ -27,11 +27,11 @@
   "description": "Advanced filter sort for Angular Material",
   "repository": {
     "type": "git",
-    "url": "https://github.com/phongca22/ngx-filter.git"
+    "url": "https://github.com/phongca22/ngx-mat-filter.git"
   },
-  "homepage": "https://github.com/phongca22/ngx-filter/blob/main/README.md",
+  "homepage": "https://github.com/phongca22/ngx-mat-filter/blob/main/README.md",
   "bugs": {
-    "url": "https://github.com/phongca22/ngx-filter/issues",
+    "url": "https://github.com/phongca22/ngx-mat-filter/issues",
     "email": "phonglover@gmail.com"
   }
 }

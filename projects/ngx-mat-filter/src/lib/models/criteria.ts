@@ -17,6 +17,7 @@ export class SortCriteria extends Criteria {
   constructor(field: Field, sort: Sort) {
     super(field);
     this.sort = sort;
+    this.description = this.sort.name;
   }
 }
 
@@ -31,6 +32,10 @@ export class FilterCriteria extends Criteria {
     super(field);
     this.operator = operator;
     this.value = value;
+    this.description = field.getLabel({
+      operator: operator,
+      value: value
+    });
   }
 }
 

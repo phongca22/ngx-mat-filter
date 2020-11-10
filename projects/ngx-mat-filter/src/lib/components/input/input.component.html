@@ -20,18 +20,18 @@
   <div [formGroup]="form" fxLayout="row" fxLayoutGap="16px">
     <mat-form-field *ngIf="isDateRange()" floatLabel="never">
       <input matInput [matDatepicker]="picker" placeholder="From" formControlName="first"
-        [max]="form.get('second').value">
+        [max]="form.get('second').value" required>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <mat-form-field *ngIf="isDateRange()" floatLabel="never">
-      <input matInput [matDatepicker]="picker" placeholder="To" formControlName="second"
-        [min]="form.get('first').value">
+      <input matInput [matDatepicker]="picker" placeholder="To" formControlName="second" [min]="form.get('first').value"
+        required>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <mat-form-field *ngIf="!isDateRange()" floatLabel="never">
-      <input matInput [matDatepicker]="picker" placeholder="Value" formControlName="first">
+      <input matInput [matDatepicker]="picker" placeholder="Value" formControlName="first" required>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
@@ -40,29 +40,29 @@
 <ng-template #number>
   <div [formGroup]="form" fxLayout="row" fxLayoutGap="16px">
     <mat-form-field *ngIf="isNumberRange()" floatLabel="never">
-      <input matInput formControlName="first" placeholder="Min" type="number" [max]="form.get('second').value">
+      <input matInput formControlName="first" placeholder="Min" type="number" [max]="form.get('second').value" required>
     </mat-form-field>
     <mat-form-field *ngIf="isNumberRange()" floatLabel="never">
-      <input matInput formControlName="second" placeholder="Max" type="number" [min]="form.get('first').value">
+      <input matInput formControlName="second" placeholder="Max" type="number" [min]="form.get('first').value" required>
     </mat-form-field>
     <mat-form-field *ngIf="!isNumberRange()" floatLabel="never">
-      <input matInput formControlName="first" placeholder="Value" type="number">
+      <input matInput formControlName="first" placeholder="Value" type="number" required>
     </mat-form-field>
   </div>
 </ng-template>
 <ng-template #text>
   <div [formGroup]="form">
     <mat-form-field floatLabel="never">
-      <input matInput formControlName="first" placeholder="Value">
+      <input matInput formControlName="first" placeholder="Value" required>
     </mat-form-field>
   </div>
 </ng-template>
 <ng-template #autocomplete>
   <div [formGroup]="form">
     <mat-form-field floatLabel="never">
-      <input type="text" placeholder="Value" matInput formControlName="first" [matAutocomplete]="auto">
+      <input type="text" placeholder="Value" matInput formControlName="first" [matAutocomplete]="auto" required>
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let opt of filteredValues| async" [value]="opt">
+        <mat-option *ngFor="let opt of filteredValues | async" [value]="opt">
           {{opt.name}}
         </mat-option>
       </mat-autocomplete>
@@ -73,7 +73,7 @@
   <div [formGroup]="form">
     <mat-form-field floatLabel="never">
       <mat-label>Value</mat-label>
-      <mat-select formControlName="first" multiple>
+      <mat-select formControlName="first" multiple required>
         <mat-option *ngFor="let opt of field.options" [value]="opt">{{opt.name}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -83,7 +83,7 @@
   <div [formGroup]="form">
     <mat-form-field floatLabel="never">
       <mat-label>Value</mat-label>
-      <mat-select formControlName="first">
+      <mat-select formControlName="first" required>
         <mat-option *ngFor="let opt of field.options" [value]="opt">{{opt.name}}</mat-option>
       </mat-select>
     </mat-form-field>
