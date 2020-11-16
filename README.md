@@ -2,7 +2,7 @@
 
 ![GitHub](https://img.shields.io/github/license/phongca22/ngx-mat-filter)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/phongca22/ngx-mat-filter)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/phongca22/ngx-mat-filter/Build%20Angular)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/phongca22/ngx-mat-filter/build)
 
 ## What is it?
 
@@ -18,10 +18,7 @@ A material component providing a dynamic input for filtering and ordering. It wi
 - Autocomplete
 - Date
 
-#### Support locale compare when sorting
-#### Ivy Disabled
-
-#### Support many operators based on Field Type
+#### Dynamic operators based on Field Type
 ![Operator 1](https://raw.githubusercontent.com/phongca22/ngx-mat-filter/main/docs/images/operator-1.png)
 ![Operator 2](https://raw.githubusercontent.com/phongca22/ngx-mat-filter/main/docs/images/operator-2.png)
 ![Operator 3](https://raw.githubusercontent.com/phongca22/ngx-mat-filter/main/docs/images/operator-3.png)
@@ -34,7 +31,7 @@ A material component providing a dynamic input for filtering and ordering. It wi
 
 ## Installation
 
-#### Peer Dependencies:
+Peer Dependencies:
 
 | Package Name         | Version        |
 | :------------------- | :------------- |
@@ -45,19 +42,19 @@ A material component providing a dynamic input for filtering and ordering. It wi
 | @angular/material    | ^9.2.4         |
 | moment               | ^2.29.1        |
 
-#### Install
+Install
 
-```cmd
+```bash
 npm install ngx-mat-filter
 ```
 
-#### Choose the version corresponding to your Angular version:
+Choose the version corresponding to your Angular version:
 
 | Angular | Angular Material | ngx-mat-filter |
 | ------- | ---------------- | -------------- |
 | 9       | 9                | 1.x+           |
 
-#### Add needed package to NgModule imports:
+Add needed package to NgModule imports:
 
 ```ts
 import { NgxMatFilterModule } from 'ngx-mat-filter';
@@ -71,13 +68,13 @@ import { NgxMatFilterModule } from 'ngx-mat-filter';
 
 ## Usage
 
-#### Add component to your page:
+Add component to your page:
 
 ```html
 <ngx-mat-filter [worker]="worker" [fields]="fields"></ngx-mat-filter>
 ```
 
-#### Setup Worker:
+Setup Worker:
 
 ```ts
 constructor() {
@@ -85,7 +82,7 @@ constructor() {
 }
 ```
 
-#### Setup fields:
+Setup fields:
 
 ```ts
 this.fields = [
@@ -128,14 +125,14 @@ this.fields = [
 ];
 ```
 
-#### Initialize data:
+Initialize data:
 
 ```ts
 this.worker.setData(this.items);
 this.worker.update();
 ```
 
-#### Data change:
+Data change:
 
 ```ts
 this.worker.dataChange.subscribe((data: Product[]) => {
@@ -143,7 +140,7 @@ this.worker.dataChange.subscribe((data: Product[]) => {
 });
 ```
 
-#### Destroy worker:
+Destroy worker:
 
 ```ts
 ngOnDestroy() {
@@ -217,6 +214,10 @@ Return filtered data set
 #### `getCriteriaChange(): Observable<{filters: FilterCriteria[], sorts: SortCriteria[]}>`
 Return criteria list
 
+## Compatibility
+#### Support locale compare when sorting
+#### Ivy Disabled
+
 ## License
 
-[MIT](https://github.com/phongca22/ngx-filter/blob/main/LICENSE)
+[MIT](https://github.com/phongca22/ngx-mat-filter/blob/main/LICENSE)
